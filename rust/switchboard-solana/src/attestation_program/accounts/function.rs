@@ -339,13 +339,13 @@ impl FunctionAccountData {
     /// * `function_account_info` - Solana AccountInfo for a FunctionAccountData
     /// * `signer` - Solana AccountInfo for a signer
     pub fn validate_signer<'a>(
-        function_account_info: &AccountInfo<'a>,
-        signer: &AccountInfo<'a>,
+        function_account_info: &'a AccountInfo<'a>,
+        signer: &'a AccountInfo<'a>,
     ) -> anchor_lang::Result<bool> {
         // deserialize accounts and verify the owner
 
         let function_loader =
-            AccountLoader::<'_, FunctionAccountData>::try_from(&function_account_info.clone())?;
+            AccountLoader::<'_, FunctionAccountData>::try_from(&function_account_info)?;
         let func = function_loader.load()?;
 
         // TODO: validate the seeds and bump

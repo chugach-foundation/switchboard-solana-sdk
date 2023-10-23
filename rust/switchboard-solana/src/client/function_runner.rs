@@ -182,18 +182,18 @@ impl FunctionRunner {
         })
     }
 
-    pub fn assert_mr_enclave(&self) -> Result<(), SwitchboardClientError> {
-        if let Some(function_data) = self.function_data.clone() {
-            let quote_raw = Gramine::generate_quote(&self.signer.to_bytes()).unwrap_or_default();
-            if let Ok(quote) = Quote::parse(&quote_raw) {
-                let mr_enclave: MrEnclave = quote.isv_report.mrenclave.try_into().unwrap();
-                if !function_data.mr_enclaves.contains(&mr_enclave) {
-                    return Err(SwitchboardClientError::MrEnclaveMismatch);
-                }
-            }
-        }
-        Ok(())
-    }
+    // pub fn assert_mr_enclave(&self) -> Result<(), SwitchboardClientError> {
+    //     if let Some(function_data) = self.function_data.clone() {
+    //         let quote_raw = Gramine::generate_quote(&self.signer.to_bytes()).unwrap_or_default();
+    //         if let Ok(quote) = Quote::parse(&quote_raw) {
+    //             let mr_enclave: MrEnclave = quote.isv_report.mrenclave.try_into().unwrap();
+    //             if !function_data.mr_enclaves.contains(&mr_enclave) {
+    //                 return Err(SwitchboardClientError::MrEnclaveMismatch);
+    //             }
+    //         }
+    //     }
+    //     Ok(())
+    // }
 
     pub fn new(
         url: &str,
@@ -502,7 +502,7 @@ impl FunctionRunner {
             chain_result_info: Solana(SOLFunctionResult {
                 serialized_tx: bincode::serialize(&tx).unwrap(),
             }),
-            error_code,
+            // error_code, NOTE: Commented out because we only want to depend on sbv2 to consume data.
         })
     }
 

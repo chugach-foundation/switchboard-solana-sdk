@@ -272,8 +272,8 @@ impl FunctionRequestAccountData {
 
     pub fn validate_signer<'a>(
         &self,
-        function_account_info: &AccountInfo<'a>,
-        signer: &AccountInfo<'a>,
+        function_account_info: &'a AccountInfo<'a>,
+        signer: &'a AccountInfo<'a>,
     ) -> anchor_lang::Result<bool> {
         if self.function != function_account_info.key() {
             msg!("function key mismatch");
@@ -286,7 +286,7 @@ impl FunctionRequestAccountData {
         }
 
         let function_loader =
-            AccountLoader::<'_, FunctionAccountData>::try_from(&function_account_info.clone())?;
+            AccountLoader::<'_, FunctionAccountData>::try_from(&function_account_info)?;
         function_loader.load()?; // check owner/discriminator
 
         // validate the enclaves delegated signer matches
